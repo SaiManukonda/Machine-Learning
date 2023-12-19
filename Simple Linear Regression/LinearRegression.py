@@ -7,15 +7,18 @@ class LinearRegression:
         self.Y_train = Y_train
         self.X_test = X_test
         self.Y_test = Y_test
+        self.m = 0
+        self.b = 0
     
     #this method will train the data, given a learning rate and number of training iterations
     #this will return the values m and b from the equation y = mx + b
     #with those values, you have your linear regression equation
     #this training algorithm is called gradient descent
+    #also prints the cost after every iteration, so you can see if your model is imporving or not
     def train(self, learningRate, iterations):
         m = 0
         b = 0
-        for i in range(iterations):
+        for curr in range(iterations):
             
             #cost function
             cost = 0
@@ -23,8 +26,7 @@ class LinearRegression:
                 cost += pow(self.Y_train[i] - (m * self.X_train[i] + b), 2)
             cost = cost / len(self.X_train)
             #print out the cost function so you can see what the cost is after every 1000 iterations
-            if iterations % 1000 == 0:
-                print("Cost after " +  str(iterations) + " iterations is " + str(cost))
+            print("Cost after " +  str(curr+1) + " iterations is " + str(cost))
             
             #gradient descent algorithm
             partialM = 0
@@ -37,5 +39,15 @@ class LinearRegression:
             
             m = m - (learningRate * partialM)
             b = b - (learningRate * partialB)
+        
+        self.m = m
+        self.b = b
         return m, b
+    
+    #prints the predicted and actual model
+    def check(self):
+        for i in range(len(self.X_test)):
+            y_predicted = (self.m * self.X_test[i])  + self.b
+            print("Y Predicted = " + str(y_predicted))
+            print("Y Actual    = " + str(self.Y_test[i]))
                 
